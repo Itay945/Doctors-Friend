@@ -1,4 +1,3 @@
-// LexicalEditor.js
 import React from 'react';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
@@ -6,13 +5,12 @@ import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
+import ToolbarPlugin from './ToolBar'; // Adjust path as needed
 
 
-const theme = {
-  // Minimal theme config (can be empty or expanded later)
-};
+const theme = {}; // Optional: for future custom themes
 
-function onError(error) {
+function onError(error: Error) {
   console.error('Lexical Error:', error);
 }
 
@@ -24,9 +22,8 @@ export default function LexicalEditor() {
     editorState: null,
   };
 
-  const handleChange = (editorState) => {
+  const handleChange = (editorState: any) => {
     editorState.read(() => {
-      // You can read the current state here
       const json = editorState.toJSON();
       console.log('Editor content:', json);
     });
@@ -34,10 +31,17 @@ export default function LexicalEditor() {
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <div className="editor-container">
+        <ToolbarPlugin />
+      <div className="relative border border-gray-300 rounded-md bg-white p-4 shadow-sm ">
         <RichTextPlugin
-          contentEditable={<ContentEditable className="editor-input" />}
-          placeholder={<div className="editor-placeholder">Start typing...</div>}
+          contentEditable={
+            <ContentEditable className="outline-none min-h-[100px] text-gray-800" />
+          }
+          placeholder={
+            <div className="absolute top-4 left-4 text-gray-400 pointer-events-none">
+              Start typing...
+            </div>
+          }
           ErrorBoundary={LexicalErrorBoundary}
         />
         <HistoryPlugin />
